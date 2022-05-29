@@ -6,6 +6,7 @@ import (
 	"rest-api-go/controllers"
 	"rest-api-go/middleware"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -13,10 +14,10 @@ func HandleRequest() {
 	r := mux.NewRouter()
 	r.Use(middleware.ContentTypeMiddleware)
 	r.HandleFunc("/", controllers.Home)
-	r.HandleFunc("/Personalidades", controllers.TodasPersonalidades).Methods("Get")
-	r.HandleFunc("/Personalidades/{id}", controllers.RetornaUmaPersonalidade).Methods("Get")
-	r.HandleFunc("/Personalidades", controllers.CriaUmaNovaPersonalidade).Methods("Post")
-	r.HandleFunc("/Personalidades/{id}", controllers.DeletaUmaPersonalidade).Methods("Delete")
-	r.HandleFunc("/Personalidades/{id}", controllers.EditaPersonalidade).Methods("Put")
-	log.Fatal(http.ListenAndServe(":8000", r))
+	r.HandleFunc("/api/personalidades", controllers.TodasPersonalidades).Methods("Get")
+	r.HandleFunc("/api/personalidades/{id}", controllers.RetornaUmaPersonalidade).Methods("Get")
+	r.HandleFunc("/api/personalidades", controllers.CriaUmaNovaPersonalidade).Methods("Post")
+	r.HandleFunc("/api/personalidades/{id}", controllers.DeletaUmaPersonalidade).Methods("Delete")
+	r.HandleFunc("/api/personalidades/{id}", controllers.EditaPersonalidade).Methods("Put")
+	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(handlers.AllowedOrigins([]string{"*"}))(r)))
 }
